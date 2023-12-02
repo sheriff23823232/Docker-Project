@@ -61,16 +61,10 @@ pipeline {
           }
       }
    }
-   
-   stage('Download k8s deployment yaml file') {
-	  steps {
-          sh "ssh sheriff23823232@34.100.250.244 'wget https://github.com/sheriff23823232/Docker-Project/blob/master/frontend.yaml'"
-      }
-	}
-	
+   	
 	stage('Deploy App') {
 	  steps {
-          sh "ssh sheriff23823232@34.100.250.244 'sleep 5;kubectl create deployment -f frontend.yaml"
+          sh "ssh sheriff23823232@34.100.250.244 'sleep 5;kubectl create -f frontend.yaml"
       }
     }
   }
