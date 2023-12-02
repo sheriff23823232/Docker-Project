@@ -61,10 +61,26 @@ pipeline {
           }
       }
    }
-   	
-	stage('Deploy App') {
+   
+   
+   
+   stage('Modify frontend yaml file') {
 	  steps {
-          sh "ssh sheriff23823232@34.100.250.244 'sleep 5 && kubectl create -f frontend.yaml'"
+          sh "sed -i 's\sheriff23823232/flask:4\sheriff23823232/flask:":$BUILD_NUMBER"\g' frontend.yaml"
+      }
+    }
+   
+   stage('Copy file to k8s control node') {
+      steps{
+        dir("${env.WORKSPACE}"){
+          sh "scp -r frontend.yaml sheriff23823232@34.100.250.244:/home/sheriff23823232"
+          }
+      }
+   }
+   
+   stage('Deploy App') {
+	  steps {
+          sh "ssh sheriff23823232@34.100.250.244 'sleep 5;kubectl create -f frontend.yaml'"
       }
     }
   }
