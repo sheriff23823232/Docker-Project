@@ -66,7 +66,7 @@ pipeline {
    
    stage('Modify frontend yaml file') {
 	  steps {
-          sh "sed -i 's\sheriff23823232/flask:4\sheriff23823232/flask:":$BUILD_NUMBER"\g' frontend.yaml"
+          sh "sed -i 's\'sheriff23823232/flask:4'\'sheriff23823232/flask:":$BUILD_NUMBER"'\g' frontend.yaml"
       }
     }
    
