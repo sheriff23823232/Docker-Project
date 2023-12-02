@@ -27,15 +27,15 @@ pipeline {
     }
 
     
-    stage('current') {
+    stage('Navigate to mysql directory') {
       steps{
         dir("${env.WORKSPACE}/mysql"){
           sh "pwd"
           }
       }
-   }
+    }
    
-   stage('Build Mysql Image') {
+    stage('Build Mysql Image') {
       steps{
         script {
           dockerImage2 = docker.build registry_mysql + ":$BUILD_NUMBER"
@@ -54,7 +54,7 @@ pipeline {
       }
     }
 
-	stage('Back to current') {
+	stage('Navigate back to workspace directory') {
       steps{
         dir("${env.WORKSPACE}"){
           sh "pwd"
@@ -62,14 +62,16 @@ pipeline {
       }
    }
    
-      stage('Deploy App') {
+   stage('Download k8s deployment yaml file') {
 	  steps {
           sh "ssh sheriff23823232@34.100.250.244 'wget https://github.com/sheriff23823232/Docker-Project/blob/master/frontend.yaml'"
       }
+	}
+	
+	stage('Deploy App') {
 	  steps {
           sh "ssh sheriff23823232@34.100.250.244 'sleep 5;kubectl create deployment -f frontend.yaml"
       }
-    }	
-  
+    }
   }
 }
