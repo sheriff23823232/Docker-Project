@@ -62,11 +62,12 @@ pipeline {
       }
    }
    
-   stage('Deploy App') {
-      steps {
-        script {
-          kubernetesDeploy(configs: "frontend.yaml", kubeconfigId: "kube")
-        }
+      stage('Deploy App') {
+	  steps {
+          sh "ssh sheriff23823232@34.100.250.244 'wget https://github.com/sheriff23823232/Docker-Project/blob/master/frontend.yaml'"
+      }
+	  steps {
+          sh "ssh sheriff23823232@34.100.250.244 'sleep 5;kubectl create deployment -f frontend.yaml"
       }
     }	
   
