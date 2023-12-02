@@ -1,12 +1,15 @@
 pipeline {
 
   environment {
-    registry = "10.138.0.3:5001/mgsgoms/flask"
-    registry_mysql = "10.138.0.3:5001/mgsgoms/mysql"
-    dockerImage = ""
+    registry_flask = "sheriff23823232/flask"
+	registry_mysql = "sheriff23823232/mysql"
+    registryCredential = 'dockerhub'
+    dockerImage1 = ""
+	dockerImage2 = ""
   }
 
   agent any
+  
     stages {
   
     stage('Checkout Source') {
@@ -15,24 +18,15 @@ pipeline {
       }
     }
 
-    stage('Build image') {
+    stage('Build Flask Image') {
       steps{
         script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          dockerImage1 = docker.build registry_flask + ":$BUILD_NUMBER"
         }
       }
     }
 
-    stage('Push Image') {
-      steps{
-        script {
-          docker.withRegistry( "" ) {
-            dockerImage.push()
-          }
-        }
-      }
-    }
-
+    
     stage('current') {
       steps{
         dir("${env.WORKSPACE}/mysql"){
@@ -40,20 +34,41 @@ pipeline {
           }
       }
    }
-   stage('Build mysql image') {
-     steps{
-       sh 'docker build -t "10.138.0.3:5001/mgsgoms/mysql:$BUILD_NUMBER"  "$WORKSPACE"/mysql'
-        sh 'docker push "10.138.0.3:5001/mgsgoms/mysql:$BUILD_NUMBER"'
+   
+   stage('Build Mysql Image') {
+      steps{
+        script {
+          dockerImage2 = docker.build registry_mysql + ":$BUILD_NUMBER"
         }
       }
-    stage('Deploy App') {
+    }
+      
+    stage('Push Image') {
+      steps{
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage1.push()
+			dockerImage2.push()
+          }
+        }
+      }
+    }
+
+	stage('Back to current') {
+      steps{
+        dir("${env.WORKSPACE}"){
+          sh "pwd"
+          }
+      }
+   }
+   
+   stage('Deploy App') {
       steps {
         script {
           kubernetesDeploy(configs: "frontend.yaml", kubeconfigId: "kube")
         }
       }
-    }
-
+    }	
+  
   }
-
 }
