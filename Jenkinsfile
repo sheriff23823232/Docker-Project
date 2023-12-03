@@ -73,7 +73,7 @@ pipeline {
    
    stage('Deploy App') {
 	  steps {
-          sh "ssh sheriff23823232@34.100.250.244 'sleep 30 && kubectl create -f frontend.yaml && sleep 30 && kubectl create -f frontend.yaml'"
+          sh "ssh sheriff23823232@34.100.250.244 'sleep 30 && kubectl delete -f frontend.yaml && sleep 30 && kubectl create -f frontend.yaml'"
       }
     }
   }
