@@ -16,7 +16,7 @@ spec:
       app: frontend
    spec:
     containers:
-    - image: sheriff23823232/flask:13
+    - image: sheriff23823232/flask:14
       name: frontend
 
 ---
@@ -49,7 +49,7 @@ spec:
           run: backend
      spec:
         containers:
-        - image: sheriff23823232/mysql:13
+        - image: sheriff23823232/mysql:14
           imagePullPolicy: IfNotPresent
           args: ["--default-authentication-plugin=mysql_native_password"]
           name: backend
