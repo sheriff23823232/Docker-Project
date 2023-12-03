@@ -21,7 +21,7 @@ pipeline {
     stage('Build Flask Image') {
       steps{
         script {
-          dockerImage1 = docker.build registry_flask + ":$BUILD_NUMBER"
+          dockerImage1 = docker.build registry_flask:latest
         }
       }
     }
@@ -38,7 +38,7 @@ pipeline {
     stage('Build Mysql Image') {
       steps{
         script {
-          dockerImage2 = docker.build registry_mysql + ":$BUILD_NUMBER"
+          dockerImage2 = docker.build registry_mysql:latest
         }
       }
     }
