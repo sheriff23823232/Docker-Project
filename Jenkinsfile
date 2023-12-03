@@ -64,10 +64,8 @@ pipeline {
 
 stage('Deploy App') {
       steps {
-        script {
-          kubernetesDeploy(configs: "frontend.yaml")
+         sh "sleep 60 && kubectl delete -f frontend.yaml && sleep 30 && kubectl create -f frontend.yaml'"
         }
-      }
     }
 	    
   }
