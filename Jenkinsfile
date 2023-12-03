@@ -59,7 +59,16 @@ pipeline {
         dir("${env.WORKSPACE}"){
           sh "pwd"
           }
+        }
       }
-   }
+
+stage('Deploy App') {
+      steps {
+        script {
+          kubernetesDeploy(configs: "frontend.yaml", kubeconfigId: "kube")
+        }
+      }
+    }
+	    
   }
 }
