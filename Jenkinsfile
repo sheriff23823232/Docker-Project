@@ -26,7 +26,7 @@ pipeline {
       }
     }
 
-    
+  
     stage('Navigate to mysql directory') {
       steps{
         dir("${env.WORKSPACE}/mysql"){
@@ -61,20 +61,5 @@ pipeline {
           }
       }
    }
-   
-   
-   stage('Copy file to k8s control node') {
-      steps{
-        dir("${env.WORKSPACE}"){
-          sh "scp -r frontend.yaml sheriff23823232@34.100.250.244:/home/sheriff23823232"
-          }
-      }
-   }
-   
-   stage('Deploy App') {
-	  steps {
-          sh "ssh sheriff23823232@34.100.250.244 'sleep 60 && kubectl delete -f frontend.yaml && sleep 30 && kubectl create -f frontend.yaml'"
-      }
-    }
   }
 }
