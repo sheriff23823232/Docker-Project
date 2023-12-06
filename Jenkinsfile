@@ -62,10 +62,12 @@ pipeline {
         }
       }
 
-stage('Deploy App') {
+    stage('Deploy App') {
       steps {
-         sh "kubectl apply -f frontend.yaml"
+        script {
+          kubernetesDeploy(configs: "frontend.yaml", kubeconfigId: "kubernetes")
         }
+      }
     }
 	    
   }
